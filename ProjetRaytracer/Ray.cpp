@@ -1,45 +1,38 @@
 #include "Ray.h"
 
-Ray::Ray() {}
+Ray::Ray() 
+{
+	m_Origin = Vector3(0, 0, 0);
+	m_Direction = Vector3(1, 0, 0);
+}
 
 Ray::Ray(const Vector3& a, const Vector3& b)
+	: m_Origin(a)
+	, m_Direction(b)
+{}
+
+// Setter
+void Ray::setOrigin(Vector3 v1)
 {
-	m_A = a;
-	m_B = b;
+	m_Origin = v1;
 }
 
-// Getter and Setter
-Vector3 Ray::getA()
+void Ray::setDirection(Vector3 v1)
 {
-	return m_A;
+	m_Direction = v1;
 }
 
-void Ray::setA(Vector3 v1)
+Vector3 Ray::Origin() const
 {
-	m_A = v1;
+	return m_Origin;
 }
 
-Vector3 Ray::getB()
+Vector3 Ray::Direction() const
 {
-	return m_B;
+	return m_Direction;
 }
 
-void Ray::setB(Vector3 v1)
+Vector3 Ray::point_at_parameter(double t) const
 {
-	m_B = v1;
-}
-
-Vector3 Ray::origin() const
-{
-	return m_A;
-}
-
-Vector3 Ray::direction() const
-{
-	return m_B;
-}
-
-Vector3 Ray::point_at_parameter(float t) const
-{
-	return m_A + t * m_B;
+	return m_Origin + t * m_Direction;
 }

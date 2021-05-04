@@ -10,18 +10,16 @@ public:
 	Ray(const Vector3& a, const Vector3& b);
 
 	//Gette and Setter
-	Vector3 getA();
-	void setA(Vector3 v1);
-	Vector3 getB();
-	void setB(Vector3 v1);
+	void setOrigin(Vector3 v1);
+	void setDirection(Vector3 v1);
 
-	Vector3 origin() const;
-	Vector3 direction() const;
-	Vector3 point_at_parameter(float t) const;
+	Vector3 Origin() const;
+	Vector3 Direction() const;
+	Vector3 point_at_parameter(double t) const;
 
 private:
-	Vector3 m_A;
-	Vector3 m_B;
+	Vector3 m_Origin;
+	Vector3 m_Direction;
 };
 
 #endif // !RAY_H

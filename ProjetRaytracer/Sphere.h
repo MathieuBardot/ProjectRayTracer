@@ -1,30 +1,37 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include <SFML/Graphics.hpp>
 #include "Vector3.h"
+#include "Ray.h"
+#include "Object.h"
+//#include "Color.h"
 
-class Sphere
+class Sphere : public Object
 {
 public:
-	Sphere() = default;
-	Sphere(class Vector3 center, float radius);
+	Sphere();
+	Sphere(class Vector3 center, double radius, sf::Color col);
 	~Sphere() = default;
 
 	//Getter and Setter
-	float getRadius();
-	void setRadius(float radius);
+	double getRadius();
+	void setRadius(double radius);
 	class Vector3 getCenter();
 	void setCenter(class Vector3 center);
+	sf::Color getColor() override;
+	void setSphereColor(sf::Color col);
 
-	float Volume();
-	float Aire();
-	//float Intersect_sphere(const class Ray &r);
-	bool Intersect_sphere(const class Ray& r);
-	class Vector3 color(const class Ray& r);
+	double Volume();
+	double Aire();
+	double Intersect_sphere(const class Ray& r);
+	Vector3 getNormalAt(Vector3 point);
+	double FindIntersection(const Ray& ray) override;
 
 private:
-	float m_radius;
+	double m_radius;
 	Vector3 m_center;
+	sf::Color m_color;
 };
 
 #endif // !SPHERE_H
