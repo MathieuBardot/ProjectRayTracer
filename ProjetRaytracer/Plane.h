@@ -15,7 +15,7 @@ public:
 	~Plane() = default;
 
 	//Getter and Setter
-	Vector3 getPlaneNormal();
+	Vector3 getNormalAt(Vector3 point) override;
 	void setPlaneNormal(class Vector3 normal);
 	double getPlaneDistance();
 	void setPlaneDistance(double distance);

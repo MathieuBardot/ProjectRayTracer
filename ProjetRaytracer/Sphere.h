@@ -25,7 +25,7 @@ public:
 	double Volume();
 	double Aire();
 	double Intersect_sphere(const class Ray& r);
-	Vector3 getNormalAt(Vector3 point);
+	Vector3 getNormalAt(Vector3 point) override;
 	double FindIntersection(const Ray& ray) override;
 
 private:

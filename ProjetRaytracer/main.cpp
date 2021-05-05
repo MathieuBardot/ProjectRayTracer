@@ -8,6 +8,7 @@
 #include "Sphere.h"
 #include "Object.h"
 #include "Plane.h"
+#include "Source.h"
 
 int winningObjectIndex(std::vector<double> object_intersections)
 {
@@ -66,16 +67,102 @@ int winningObjectIndex(std::vector<double> object_intersections)
     }
 }
 
+sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_direction, std::vector<Object*>scene_objects, int index_of_winning_object, std::vector<Source*> light_sources, double accuracy, double ambientLight)
+{
+    sf::Color winning_object_color = scene_objects[index_of_winning_object]->getColor();
+    Vector3 winning_object_normal = scene_objects[index_of_winning_object]->getNormalAt(intersection_position);
+    sf::Color final_color (static_cast<double>(winning_object_color.r) * ambientLight, 
+        static_cast<double>(winning_object_color.g) * ambientLight,
+        static_cast<double>(winning_object_color.b) * ambientLight,
+        static_cast<double>(winning_object_color.a));
+
+    for (auto light_index = 0; light_index < light_sources.size(); ++light_index)
+    {
+        Vector3 light_direction = light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize();
+       
+        float cosine_angle = winning_object_normal.dotProduct(light_direction);
+
+        if (cosine_angle > 0)
+        {
+            // test for shadows
+            bool shadowed = false;
+
+            Vector3 distance_to_light = light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize();
+            float distance_to_light_magnitude = distance_to_light.Magnitude();
+
+            Ray shadow_ray(intersection_position,light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize());
+        
+            std::vector<double> secondary_intersections;
+
+            for (auto object_index = 0; object_index < scene_objects.size() && shadowed == false; ++object_index)
+            {
+                secondary_intersections.push_back(scene_objects[object_index]->FindIntersection(shadow_ray));
+            }
+
+            for (auto c = 0; c < secondary_intersections.size(); ++c)
+            {
+                if (secondary_intersections[c] > accuracy)
+                {
+                    if (secondary_intersections[c] <= distance_to_light_magnitude)
+                    {
+                        shadowed = true;
+                    }
+                }
+                break;
+            }
+
+            if (shadowed == false)
+            {
+                // see part 7 at 1h07m28s
+                sf::Color temp = light_sources[light_index]->getLightColor();
+                temp = sf::Color(static_cast<float>(temp.r) * cosine_angle,
+                    static_cast<float>(temp.g) * cosine_angle,
+                    static_cast<float>(temp.b) * cosine_angle,
+                    static_cast<float>(temp.a));
+                final_color = final_color + winning_object_color * temp;
+
+                // transparence betwenn 0 - 255
+                if (static_cast<int>(winning_object_color.a) > 0 && static_cast<int>(winning_object_color.a) <= 255)
+                {
+                    double dot1 = winning_object_normal.dotProduct(intersections_ray_direction.Negative());
+                    Vector3 scalar1 = winning_object_normal.vectMult(dot1);
+                    Vector3 add1 = scalar1.vectAdd(intersections_ray_direction);
+                    Vector3 scalar2 = add1.vectMult(2);
+                    Vector3 add2 = intersections_ray_direction.Negative().vectAdd(scalar2);
+                    Vector3 reflection_direction = add2.Normalize();
+
+                    double transparence = reflection_direction.dotProduct(light_direction);
+                    
+                    if (transparence > 0)
+                    {
+                        transparence = std::pow(transparence, 10);
+                        sf::Color temp1 = light_sources[light_index]->getLightColor();
+                        temp1 = sf::Color(static_cast<int>(temp1.r) * (transparence * static_cast<int>(winning_object_color.a)),
+                            static_cast<int>(temp1.g) * (transparence * static_cast<int>(winning_object_color.a)),
+                            static_cast<int>(temp1.b) * (transparence * static_cast<int>(winning_object_color.a)),
+                            static_cast<double>(temp1.a));
+                        final_color = final_color + temp1;
+                    }
+                }
+            }
+        }
+    }
+    return final_color;
+}
+
 int main()
 {
     // Taille de l'image.
     const int image_width = 640;
     const int image_height = 480;
-    const auto aspect_ratio = (double)image_width / (double)image_height;
     sf::RenderWindow window(sf::VideoMode(image_width, image_height), "Projet Raytracer");
 
+    const auto aspect_ratio = (double)image_width / (double)image_height;
+    double ambientLight = 0.2;
+    double accuracy = 0.000001;
+
     // Création du tableau de pixels.
-    auto * pixels = new sf::Uint8[image_width * image_height * 4];
+    auto* pixels = new sf::Uint8[image_width * image_height * 4];
 
     sf::Texture texture;
     if (!texture.create(image_width, image_height))
@@ -88,12 +175,10 @@ int main()
     Vector3 origin(0, 0, 0);
 
     Vector3 camPosition(3, 1.5, -4);
-    Vector3 diff_btw(camPosition.getX() - origin.getX(), 
-        camPosition.getY() - origin.getY(), 
-        camPosition.getZ() - origin.getZ());
-    
+    Vector3 diff_btw(camPosition - origin);
+
     Vector3 camDirection = diff_btw.Negative().Normalize();
-    Vector3 camRight = Vector3(0, 1, 0).crossProduct(camDirection).Normalize();
+    Vector3 camRight = Vector3(0, -1, 0).crossProduct(camDirection).Normalize();
     Vector3 camDown = camRight.crossProduct(camDirection);
 
     Camera scene_cam(camPosition, camDirection, camRight, camDown);
@@ -101,25 +186,28 @@ int main()
     // Add Light and Color
     sf::Color white_light = sf::Color::Color(255,255,255,255);
     sf::Color green = sf::Color::Color(128, 255, 128, 177);
-    //sf::Color green = sf::Color::Color(128, 255, 128, 255);
+    sf::Color red = sf::Color::Color(255, 0, 0, 177);
     sf::Color gray = sf::Color::Color(128, 128, 128, 255);
     sf::Color black = sf::Color::Color(0, 0, 0, 255);
     sf::Color maroon  = sf::Color::Color(128, 64, 64, 255);
 
-    Vector3 light_position(-7, 10, -10);
+    //Vector3 light_position(-7, 10, -10);
+    Vector3 light_position(10, 20, 25);
     Light scene_light(light_position, white_light);
-    //Light scene_light(light_position, sf::Color::White);
 
-    //std::cout << static_cast<int>(green.r) << " / " << green.g << " / " << green.b << " / " << green.a << std::endl;
+    std::vector<Source*> light_sources;
+    light_sources.push_back(dynamic_cast<Source*>(&scene_light));
 
     // Add scene objects
     Sphere scene_sphere(Vector3(0, 0, 0), 1, green);
-    Plane scene_plane(Vector3(0, 10, 0), -1, maroon);
-    //Sphere scene_sphere(Vector3(0, 0, 0), 1, sf::Color::Green);
-    //Plane scene_plane(Vector3(0, 1, 0), -1, sf::Color::Red);
+    //Sphere scene_sphere_ground(Vector3(-5, -10, 5), 10, maroon);
+    //Sphere scene_sphere_test(Vector3(1, -0.5, 0), 0.5, red);
+    Plane scene_plane(Vector3(0, 1, 0), -10, maroon);
 
     std::vector<Object*> scene_objects;
     scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere));
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_ground));
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_test));
     scene_objects.push_back(dynamic_cast<Object*>(&scene_plane));
 
     double xamnt, yamnt;
@@ -177,17 +265,20 @@ int main()
             else
             {
                 // index corresponds to an object in our scene
-                sf::Color this_color = scene_objects[index_of_winning_object]->getColor();
+                if (intersections[index_of_winning_object] > accuracy)
+                {
+                    // determine the position and direction vectors at the point of intersections
+                    Vector3 intersection_position = camera_ray_origin.vectAdd(camera_ray_direction.vectMult(intersections[index_of_winning_object]));
+                    Vector3 intersections_ray_direction = camera_ray_direction;
 
-                /*std::cout << "Couleur obtenue : " 
-                    << static_cast<int>(this_color.r) << " / " 
-                    << static_cast<int>(this_color.g) << " / " 
-                    << static_cast<int>(this_color.b) << std::endl;*/
+                    //sf::Color intersection_color = scene_objects[index_of_winning_object]->getColor();
+                    sf::Color intersection_color = getColorAt(intersection_position,intersections_ray_direction, scene_objects, index_of_winning_object, light_sources, accuracy, ambientLight);
 
-                pixels[4*currentPosition] = static_cast<int>(this_color.r);
-                pixels[4*currentPosition+1] = static_cast<int>(this_color.g);
-                pixels[4*currentPosition+2] = static_cast<int>(this_color.b);
-                pixels[4*currentPosition + 3] = static_cast<int>(this_color.a);
+                    pixels[4 * currentPosition] = static_cast<int>(intersection_color.r);
+                    pixels[4 * currentPosition + 1] = static_cast<int>(intersection_color.g);
+                    pixels[4 * currentPosition + 2] = static_cast<int>(intersection_color.b);
+                    pixels[4 * currentPosition + 3] = static_cast<int>(intersection_color.a);
+                }
             }
         }
     }

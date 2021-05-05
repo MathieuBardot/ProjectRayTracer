@@ -6,7 +6,7 @@ const double PI = 3.14;
 Plane::Plane()
 	:m_normal(Vector3(1, 0, 0))
 	, m_distance(0)
-	, m_color(sf::Color(0.5, 0.5, 0.5, 0))
+	, m_color(sf::Color(128, 128, 128, 255))
 {}
 
 Plane::Plane(Vector3 normal, double distance, sf::Color col)
@@ -15,7 +15,7 @@ Plane::Plane(Vector3 normal, double distance, sf::Color col)
 	, m_color(col)
 {}
 
-Vector3 Plane::getPlaneNormal()
+Vector3 Plane::getNormalAt(Vector3 point)
 {
 	return m_normal;
 }
@@ -59,10 +59,6 @@ double Plane::FindIntersection(const Ray& ray)
 	else
 	{
 		double b = m_normal.dotProduct(ray.Origin().vectAdd(m_normal.vectMult(m_distance).Negative()));
-		//((ray.origin() + (m_normal * m_distance)).Negative())
-		//(ray.origin() + ((m_normal * m_distance)).Negative())
-		//ray.origin() + (m_normal*m_distance).Negative()
-		//ray.origin() += (m_normal *= m_distance).Negative()
-		return -1 * b / a;
+		return - b / a;
 	}
 }

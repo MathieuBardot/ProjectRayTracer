@@ -6,7 +6,7 @@ const double PI = 3.14;
 Sphere::Sphere()
 	:m_center(Vector3(0,0,0))
 	,m_radius(1.0)
-	,m_color(sf::Color(0.5,0.5,0.5,0))
+	,m_color(sf::Color(128,128,128,255))
 {}
 
 Sphere::Sphere(Vector3 center, double radius, sf::Color col) 
