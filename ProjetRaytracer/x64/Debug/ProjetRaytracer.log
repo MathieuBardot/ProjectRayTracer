@@ -1,2 +1,26 @@
-﻿  Test.cpp
+﻿  main.cpp
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(98,49): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(97,53): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(96,53): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(95,72): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(145,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(153,47): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(178,44): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(177,48): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(176,48): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(175,61): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(200,54): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(199,55): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(198,55): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(197,69): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(298,31): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(283,12): warning C4101: 'tempGreen': unreferenced local variable
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(282,12): warning C4101: 'tempRed': unreferenced local variable
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(284,12): warning C4101: 'tempBlue': unreferenced local variable
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(342): warning C4723: potential divide by 0
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(341): warning C4723: potential divide by 0
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(336): warning C4723: potential divide by 0
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(335): warning C4723: potential divide by 0
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(330): warning C4723: potential divide by 0
+C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(329): warning C4723: potential divide by 0
   ProjetRaytracer.vcxproj -> C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\x64\Debug\ProjetRaytracer.exe

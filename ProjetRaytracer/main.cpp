@@ -359,6 +359,9 @@ int main()
                     if (index_of_winning_object == -1)
                     {
                         // set the backgrounf Black
+                        //tempRed[aa_index] = 0;
+                        //tempGreen[aa_index] = 0;
+                        //tempBlue[aa_index] = 0;
                         pixels[4 * currentPosition] = 0;
                         pixels[4 * currentPosition + 1] = 0;
                         pixels[4 * currentPosition + 2] = 0;
@@ -376,6 +379,9 @@ int main()
                             //sf::Color intersection_color = scene_objects[index_of_winning_object]->getColor();
                             sf::Color intersection_color = getColorAt(intersection_position, intersections_ray_direction, scene_objects, index_of_winning_object, light_sources, accuracy, ambientLight);
 
+                            //tempRed[aa_index] = static_cast<int>(intersection_color.r);
+                            //tempGreen[aa_index] = static_cast<int>(intersection_color.g);
+                            //tempBlue[aa_index] = static_cast<int>(intersection_color.b);
                             pixels[4 * currentPosition] = static_cast<int>(intersection_color.r);
                             pixels[4 * currentPosition + 1] = static_cast<int>(intersection_color.g);
                             pixels[4 * currentPosition + 2] = static_cast<int>(intersection_color.b);
@@ -384,6 +390,28 @@ int main()
                     }
                 }
             }
+
+            //average the pixel color;
+            /*double totalRed = 0;
+            double totalGreen = 0;
+            double totalBlue = 0;
+
+            for (auto iRed = 0; iRed < aadepth * aadepth; ++iRed)
+                totalRed = totalRed + tempRed[iRed];
+
+            for (auto iGreen = 0; iGreen < aadepth * aadepth; ++iGreen)
+                totalGreen = totalGreen + tempGreen[iGreen];
+
+            for (auto iBlue = 0; iBlue < aadepth * aadepth; ++iBlue)
+                totalBlue = totalBlue + tempBlue[iBlue];
+
+            double avgRed = totalRed / (aadepth * aadepth);
+            double avgGreen = totalGreen / (aadepth * aadepth);
+            double avgBlue = totalBlue / (aadepth * aadepth);
+
+            pixels[4 * currentPosition] = avgRed;
+            pixels[4 * currentPosition + 1] = avgGreen;
+            pixels[4 * currentPosition + 2] = avgBlue;*/
         }
     }
 
