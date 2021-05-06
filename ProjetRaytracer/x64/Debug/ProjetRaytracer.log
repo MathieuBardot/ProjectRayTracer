@@ -1,16 +1,2 @@
-﻿  main.cpp
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(77,49): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(76,53): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(75,53): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(74,72): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(83,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(91,47): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(121,44): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(120,48): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(119,48): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(118,61): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(143,54): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(142,55): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(141,55): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\ProjetRaytracer\main.cpp(140,69): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+﻿  Test.cpp
   ProjetRaytracer.vcxproj -> C:\Users\Mathieu\Documents\Projet Raytracer\ProjectRayTracer\x64\Debug\ProjetRaytracer.exe
