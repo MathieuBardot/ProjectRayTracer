@@ -10,7 +10,7 @@ Light::Light(const Vector3& vec, sf::Color col)
 	, m_Color(col)
 {}
 
-// Setter
+// Getter and Setter
 Vector3 Light::getLightPosition()
 {
 	return m_Position;

@@ -9,7 +9,7 @@ public:
 	Ray();
 	Ray(const Vector3& a, const Vector3& b);
 
-	//Gette and Setter
+	//Getter and Setter
 	void setOrigin(Vector3 v1);
 	void setDirection(Vector3 v1);
 

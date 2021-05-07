@@ -11,7 +11,7 @@ Ray::Ray(const Vector3& a, const Vector3& b)
 	, m_Direction(b)
 {}
 
-// Setter
+// Getter and Setter
 void Ray::setOrigin(Vector3 v1)
 {
 	m_Origin = v1;

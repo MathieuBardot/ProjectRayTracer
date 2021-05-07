@@ -1,7 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Vector3.h"
-#include "Color.h"
 #include "Ray.h"
 #include "Camera.h"
 #include "Light.h"
@@ -72,7 +71,7 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
     sf::Color winning_object_color = scene_objects[index_of_winning_object]->getColor();
     Vector3 winning_object_normal = scene_objects[index_of_winning_object]->getNormalAt(intersection_position);
     
-    if (static_cast<int>(winning_object_color.a) == 255) // winning_object_color.a == 2
+    if (static_cast<int>(winning_object_color.a) == 255)
     {
         // checkered/tile floor pattern
         int square = (int)floor(intersection_position.getX()) + (int)floor(intersection_position.getZ());
@@ -92,14 +91,14 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
         }
     }
     
-    sf::Color final_color (static_cast<double>(winning_object_color.r) * ambientLight, 
-        static_cast<double>(winning_object_color.g) * ambientLight,
-        static_cast<double>(winning_object_color.b) * ambientLight,
-        static_cast<double>(winning_object_color.a));
+    sf::Color final_color (static_cast<int>(winning_object_color.r) * ambientLight, 
+        static_cast<int>(winning_object_color.g) * ambientLight,
+        static_cast<int>(winning_object_color.b) * ambientLight,
+        static_cast<int>(winning_object_color.a));
 
+    // reflection from objects with tranparence intensity
     if (static_cast<int>(winning_object_color.a) > 0 && static_cast<int>(winning_object_color.a) <= 128)
     {
-        // reflection from objects with tranparence intensity
         double dot1 = winning_object_normal.dotProduct(intersections_ray_direction.Negative());
         Vector3 scalar1 = winning_object_normal.vectMult(dot1);
         Vector3 add1 = scalar1.vectAdd(intersections_ray_direction);
@@ -142,7 +141,7 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
     {
         Vector3 light_direction = light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize();
        
-        float cosine_angle = winning_object_normal.dotProduct(light_direction);
+        double cosine_angle = winning_object_normal.dotProduct(light_direction);
 
         if (cosine_angle > 0)
         {
@@ -150,7 +149,7 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
             bool shadowed = false;
 
             Vector3 distance_to_light = light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize();
-            float distance_to_light_magnitude = distance_to_light.Magnitude();
+            double distance_to_light_magnitude = distance_to_light.Magnitude();
 
             Ray shadow_ray(intersection_position,light_sources[light_index]->getLightPosition().vectAdd(intersection_position.Negative()).Normalize());
         
@@ -172,10 +171,10 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
             if (shadowed == false)
             {
                 sf::Color temp = light_sources[light_index]->getLightColor();
-                temp = sf::Color(static_cast<float>(temp.r) * cosine_angle,
-                    static_cast<float>(temp.g) * cosine_angle,
-                    static_cast<float>(temp.b) * cosine_angle,
-                    static_cast<float>(temp.a));
+                temp = sf::Color(static_cast<int>(temp.r) * cosine_angle,
+                    static_cast<int>(temp.g) * cosine_angle,
+                    static_cast<int>(temp.b) * cosine_angle,
+                    static_cast<int>(temp.a));
                 final_color = final_color + winning_object_color * temp;
 
                 // transparence between 0 - 128
@@ -197,7 +196,7 @@ sf::Color getColorAt(Vector3 intersection_position, Vector3 intersections_ray_di
                         temp1 = sf::Color(static_cast<int>(temp1.r) * (transparence * static_cast<int>(winning_object_color.a)),
                             static_cast<int>(temp1.g) * (transparence * static_cast<int>(winning_object_color.a)),
                             static_cast<int>(temp1.b) * (transparence * static_cast<int>(winning_object_color.a)),
-                            static_cast<double>(temp1.a));
+                            static_cast<int>(temp1.a));
                         final_color = final_color + temp1;
                     }
                 }
@@ -217,10 +216,7 @@ int main()
     const auto aspect_ratio = (double)image_width / (double)image_height;
     double ambientLight = 0.2;
     double accuracy = 0.000001;
-    const int aadepth = 1;
-    double aathreshold = 0.1;
-
-    //sf::Clock t1;
+    const int aadepth = 1; // param fo anti-aliasing
 
     // Création du tableau de pixels.
     auto* pixels = new sf::Uint8[image_width * image_height * 4];
@@ -247,6 +243,7 @@ int main()
     /*********************** Add Light and Color *************************/
     sf::Color white_light(255,255,255,255);
     sf::Color green(128, 255, 128, 177);
+    sf::Color blue(0, 0, 255, 177);
     sf::Color red (255, 0, 0, 177);
     sf::Color gray (128, 128, 128, 255);
     sf::Color black (0, 0, 0, 255);
@@ -268,11 +265,13 @@ int main()
     Sphere scene_sphere(Vector3(0, 0, 0), 1, green);
     Plane scene_plane(Vector3(0, 3.2, 0), -1, tile_floor); 
     //Sphere scene_sphere_ground(Vector3(0, -10.5, -1), 11, maroon);
-    Sphere scene_sphere_test(Vector3(-0.8, 0, -1.5), 0.5, red);
+    Sphere scene_sphere_2(Vector3(-0.8, 0, -1.5), 0.5, red);
+    //Sphere scene_sphere_3(Vector3(2, 0, 0), 0.5, blue);
 
     std::vector<Object*> scene_objects;
     scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere));
-    scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_test));
+    scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_2));
+    //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_3));
     scene_objects.push_back(dynamic_cast<Object*>(&scene_plane));
     //scene_objects.push_back(dynamic_cast<Object*>(&scene_sphere_ground));
 
@@ -359,13 +358,13 @@ int main()
                     if (index_of_winning_object == -1)
                     {
                         // set the backgrounf Black
-                        //tempRed[aa_index] = 0;
-                        //tempGreen[aa_index] = 0;
-                        //tempBlue[aa_index] = 0;
-                        pixels[4 * currentPosition] = 0;
-                        pixels[4 * currentPosition + 1] = 0;
-                        pixels[4 * currentPosition + 2] = 0;
-                        pixels[4 * currentPosition + 3] = 255;
+                        tempRed[aa_index] = 0;
+                        tempGreen[aa_index] = 0;
+                        tempBlue[aa_index] = 0;
+                        //pixels[4 * currentPosition] = 0;
+                        //pixels[4 * currentPosition + 1] = 0;
+                        //pixels[4 * currentPosition + 2] = 0;
+                        //pixels[4 * currentPosition + 3] = 255;
                     }
                     else
                     {
@@ -379,20 +378,20 @@ int main()
                             //sf::Color intersection_color = scene_objects[index_of_winning_object]->getColor();
                             sf::Color intersection_color = getColorAt(intersection_position, intersections_ray_direction, scene_objects, index_of_winning_object, light_sources, accuracy, ambientLight);
 
-                            //tempRed[aa_index] = static_cast<int>(intersection_color.r);
-                            //tempGreen[aa_index] = static_cast<int>(intersection_color.g);
-                            //tempBlue[aa_index] = static_cast<int>(intersection_color.b);
-                            pixels[4 * currentPosition] = static_cast<int>(intersection_color.r);
-                            pixels[4 * currentPosition + 1] = static_cast<int>(intersection_color.g);
-                            pixels[4 * currentPosition + 2] = static_cast<int>(intersection_color.b);
-                            pixels[4 * currentPosition + 3] = static_cast<int>(intersection_color.a);
+                            tempRed[aa_index] = static_cast<int>(intersection_color.r);
+                            tempGreen[aa_index] = static_cast<int>(intersection_color.g);
+                            tempBlue[aa_index] = static_cast<int>(intersection_color.b);
+                            //pixels[4 * currentPosition] = static_cast<int>(intersection_color.r);
+                            //pixels[4 * currentPosition + 1] = static_cast<int>(intersection_color.g);
+                            //pixels[4 * currentPosition + 2] = static_cast<int>(intersection_color.b);
+                            //pixels[4 * currentPosition + 3] = static_cast<int>(intersection_color.a);
                         }
                     }
                 }
             }
 
             //average the pixel color;
-            /*double totalRed = 0;
+            double totalRed = 0;
             double totalGreen = 0;
             double totalBlue = 0;
 
@@ -411,7 +410,7 @@ int main()
 
             pixels[4 * currentPosition] = avgRed;
             pixels[4 * currentPosition + 1] = avgGreen;
-            pixels[4 * currentPosition + 2] = avgBlue;*/
+            pixels[4 * currentPosition + 2] = avgBlue;
         }
     }
 
@@ -431,13 +430,8 @@ int main()
     }
 
     delete pixels;
-    
-    /*sf::Clock t2;
-    sf::Time elapsed1 = t1.getElapsedTime();
-    sf::Time elapsed2 = t2.getElapsedTime();
+    light_sources.clear();
+    scene_objects.clear();
 
-    sf::Time diff = elapsed1 - elapsed2;
-    std::cout << "Temps d'execution : " << diff.asSeconds() << " seconds " << std::endl;
-    */
     return 0;
 }

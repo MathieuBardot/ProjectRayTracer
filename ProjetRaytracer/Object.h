@@ -1,10 +1,9 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include "Ray.h"
 #include "Vector3.h"
-//#include "Color.h"
 
 class Object
 {

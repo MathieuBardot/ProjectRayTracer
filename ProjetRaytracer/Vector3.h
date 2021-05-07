@@ -17,8 +17,8 @@ public:
 	void setZ(double valZ);
 
 	void operator=(const Vector3& v);
-	double operator[] (int i) const { return m_x; };
-	double& operator[] (int i) { return m_x; };
+	double operator[] (int i) const { return m_X; };
+	double& operator[] (int i) { return m_X; };
 
 	Vector3& operator+=(const Vector3& v);
 	Vector3& operator-=(const Vector3& v);
@@ -49,10 +49,10 @@ public:
 	double dotProduct(const Vector3& v1);
 	Vector3 crossProduct(const Vector3& v1);
 
-protected:
-	double m_x;
-	double m_y; 
-	double m_z;
+private:
+	double m_X;
+	double m_Y; 
+	double m_Z;
 };
 
 #endif // !VECTOR3_H

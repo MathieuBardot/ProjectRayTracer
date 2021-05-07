@@ -1,7 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include "Vector3.h"
 #include "Source.h"
 
